@@ -1,0 +1,73 @@
+﻿@using WebApi.Models;
+
+
+
+<h1>Add new cassette</h1>
+
+<script>
+    let ViewBag = @Html.Raw(Json.Serialize(ViewBag.Sale));
+    console.log(ViewBag);
+</script>
+
+<style>
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+    }
+</style>
+
+<form class="sale-form flex-direction: column" id="sale-form">
+    <div class="form-group">
+        <label>Наименование виниловой пластинки</label>
+        <select id="record" asp-items="@(new SelectList(ViewBag.VinylView, "id_record", "name_record"))" class="form-control"></select>
+    </div>
+    
+    <div class="form-group" style="flex-direction: column">
+        <label>Кассир</label>
+        <select id="employee" class="form-control">
+            @foreach (var employee in ViewBag.Employee)
+            {
+                <option value="@employee.id_employee">@employee.firstname @employee.surname</option>
+            }
+        </select>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary" id="ButtonAdd">Add</button>
+
+</form>
+
+<script>
+
+    var button = document.getElementById("ButtonAdd");
+
+    // Получаем элементы по идентификаторам
+    var record = document.getElementById("record");
+    var employee = document.getElementById("employee");
+    console.log(record.value);
+
+    function clickMe() {
+        let id_record = record.value;
+        let id_employee = employee.value;
+
+        let url = `https://localhost:7022/Add/Sale/2/${id_record}/${id_employee}`;
+
+
+        fetch(url, {
+            method: 'GET'
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Данные успешно добавлены");
+                } else {
+                    console.log("Произошла ошибка: " + response.status);
+                }
+            })
+            .catch(error => {
+                console.error("Произошла ошибка: " + error);
+            });
+    }
+    button.addEventListener("click", clickMe);
+
+</script>

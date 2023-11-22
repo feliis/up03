@@ -1,0 +1,122 @@
+﻿@using WebApi.Models;
+
+<script>
+    let ViewBag = @Html.Raw(Json.Serialize(ViewBag.Vinyl));
+    console.log(ViewBag);
+</script>
+
+
+<h1>Создание новой виниловой пластинки</h1>
+
+
+<style>
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+    }
+</style>
+
+<form class="vinyl-form" style="flex-direction:column" id="vinyl-form">
+    <div class="form-group">
+        <label for="">Наименование пластинки</label>
+        <input id="name_vinyl" minlength="2" required>
+    </div>
+    <div class="form-group">
+        <label for="artist">Исполнитель</label>
+        <select id="id_artist" name="artist" asp-items="@(new SelectList(ViewBag.Artist, "id_artist", "name_artist"))" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label for="album">Альбом</label>
+        <select id="id_album" name="album" asp-items="@(new SelectList(ViewBag.Album, "id_album", "name_album"))" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label for="label">Лейбл</label>
+        <select id="id_label" name="label" asp-items="@(new SelectList(ViewBag.Label, "id_label", "name_label"))" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label for="">Тип</label>
+        <select id="id_type" name="type" asp-items="@(new SelectList(ViewBag.Type, "id_type", "name_type"))" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label for="">Страна</label>
+        <select id="id_country" name="country" asp-items="@(new SelectList(ViewBag.Country, "id_country", "name_country"))" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label for="">Состояние пластинки</label>
+        <select id="plate_condition" name="plate_condition" asp-items="@(new SelectList(ViewBag.Condition, "id_condition", "name_condition"))" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label for="">Состояние конверта</label>
+        <select id="envelope_condition" name="envelope_condition" asp-items="@(new SelectList(ViewBag.Condition, "id_condition", "name_condition"))" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label for="label">Год издания</label>
+        <input id="year_of_issue">
+    </div>
+    <div class="form-group">
+        <label for="label">Год выпуска</label>
+        <input id="year_of_public">
+    </div>
+    <div class="form-group">
+        <label for="price">Размер диска</label>
+        <input id="disc_size">
+    </div>
+
+    <button type="submit" class="btn btn-primary" id="ButtonAdd">Add</button>
+
+</form>
+
+<script>
+
+    var button = document.getElementById("ButtonAdd");
+
+    // Получаем элементы по идентификаторам
+    var image = document.getElementById("id_album");
+    var name_vinyl = document.getElementById("name_vinyl");
+    var artist = document.getElementById("id_artist");
+    var album = document.getElementById("id_album");
+    var label = document.getElementById("id_label");
+    var type = document.getElementById("id_type");
+    var country = document.getElementById("id_country");
+    var p_condition = document.getElementById("plate_condition");
+    var e_condition = document.getElementById("envelope_condition");
+    var year_issue = document.getElementById("year_of_issue");
+    var year_public = document.getElementById("year_of_public");
+    var size = document.getElementById("disc_size");
+
+    function clickMe() {
+        let img = image.value;
+        let name_record = name_vinyl.value;
+        let id_artist = artist.value;
+        let id_album = album.value;
+        let id_label = label.value;
+        let id_type = type.value;
+        let id_country = country.value;
+        let plate_condition = p_condition.value;
+        let envelope_condition = e_condition.value;
+        let year_of_issue = year_issue.value;
+        let year_of_public = year_public.value;
+        let disc_size = size.value;
+
+        let url = `https://localhost:7022/Add/Vinyl/1/${img}/${name_record}/${id_artist}/${id_album}/${id_label}/${id_type}/${id_country}
+                /${plate_condition}/${envelope_condition}/${year_of_issue}/${year_of_public}/${disc_size}`;
+
+        fetch(url, {
+            method: 'GET'
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Данные успешно добавлены");
+                } else {
+                    l
+                    console.log("Произошла ошибка: " + response.status);
+                }
+            })
+            .catch(error => {
+                console.error("Произошла ошибка: " + error);
+            });
+    }
+    button.addEventListener("click", clickMe);
+
+</script>

@@ -1,0 +1,52 @@
+﻿@using Newtonsoft.Json
+@using WebApi.Models;
+
+
+<link rel="stylesheet" href="~/css/TablePage.css" asp-append-version="true" />
+
+@{
+    ViewData["Title"] = "Sale";
+}
+
+<script>
+    let ViewBag = @Html.Raw(Json.Serialize(ViewBag.Sale));
+    console.log(ViewBag);
+</script>
+
+@model List<SaleView>
+
+<div class="container">
+    <a style="color: blue"  class="nav-link" asp-area="" asp-controller="Sale" asp-action="AddNewSale">Add new</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Product_ID</th>
+                <th scope="col">Vinyl_Record</th>
+                <th scope="col">Employee</th>
+                <th scope="col">Date</th>
+                    <a style="opacity: 0">B</a>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @{
+                if (Model != null)
+                    foreach (var d in Model)
+                    {
+                        <tr scope="row" class="active">
+                            <td>@d.id_sale</td>
+                            <td>@d.name_record</td>
+                            <td>@d.employee_firstname @d.employee_surname</td>
+                            <td>@d.date</td>
+                            <td>
+                                <a style="color: red" asp-controller="Delete" asp-action="Sale" asp-route-id="@d.id_sale">Delete</a>
+                            </td>
+
+                        </tr>
+                    }
+            }
+        </tbody>
+    </table>
+</div>

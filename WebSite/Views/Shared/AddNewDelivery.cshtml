@@ -1,0 +1,67 @@
+﻿@using WebApi.Models;
+
+<h1>Add new delivery</h1>
+
+<script>
+    let ViewBag = @Html.Raw(Json.Serialize(ViewBag.Cassette));
+    console.log(ViewBag);
+</script>
+
+<style>
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+    }
+</style>
+
+<form class="cassette-form flex-direction: column" id="cassette-form">
+
+    <div class="form-group">
+        <label for="">Cassette</label>
+        <select id="cassette" name="cassette" asp-items="@(new SelectList(ViewBag.Cassette, "id_cassette", "name_movie"))" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label for="qty">Quantity</label>
+        <input id="qty"></input>
+    </div>
+
+    <button type="submit" class="btn btn-primary" id="ButtonAdd">Add</button>
+
+</form>
+
+<script>
+
+    var button = document.getElementById("ButtonAdd");
+
+    // Получаем элементы по идентификаторам
+    var cassette = document.getElementById("cassette");
+    var quantity = document.getElementById("qty");
+
+    function clickMe() {
+        // Получаем значения из инпутов
+        let cassettes = cassette.value;
+        let qty = quantity.value;
+
+
+        let url = `https://localhost:7022/Add/Delivery/2/${cassettes}/${qty}`;
+
+
+        fetch(url, {
+            method: 'GET'
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Данные успешно добавлены");
+                } else {
+                    console.log("Произошла ошибка: " + response.status);
+                }
+            })
+            .catch(error => {
+                console.error("Произошла ошибка: " + error);
+            });
+    }
+    button.addEventListener("click", clickMe);
+
+</script>

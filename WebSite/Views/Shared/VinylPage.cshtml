@@ -1,0 +1,81 @@
+﻿@using Newtonsoft.Json
+@using WebApi.Models;
+
+
+<link rel="stylesheet" href="~/css/VinylPage.css" asp-append-version="true" />
+
+@{
+    ViewData["Title"] = "Vinyl_Record";
+}
+
+
+
+@using (Html.BeginForm("VinylPage", "Vinyl", FormMethod.Get))
+{
+    <div class="search-container" style="padding-bottom:2rem;">
+        <b>Поиск: </b>
+        @Html.RadioButton("SearchBy","name_record",true) <text>Название пластинки</text>
+        @Html.RadioButton("SearchBy","artist",true) <text>Исполнитель</text> <br>
+        <div class="search-container" style="display: flex; flex-direction: row; column-gap: 2rem;">
+            @Html.TextBox("search", "", htmlAttributes: new {@class="w-50 form-control"})
+            <input type="submit" value="Search" class="btn btn-success" />
+        </div>
+    </div>
+}
+
+<p>
+    <a style="color: blue" class="nav-link" asp-area="" asp-controller="Vinyl" asp-action="AddNewVinyl">Создать новую пластинку</a>
+</p>
+
+@model List<VinylView>
+    <div class="card-container" style="display: flex; flex-direction: row; column-gap: 2rem;">
+    @{
+
+        if (Model.Count() == 0)
+        {
+            <h5>По вашему запросу ничего не найдено</h5>
+        }
+        else {
+
+        
+        foreach (var d in Model)
+                        {
+                        <div class="card" style="width: 20rem;">
+                    <img src="@d.img" class="card-img-top">
+                            <div class="card-body">
+                                <div scope="row" class="active">
+                                    <h5 class="card-title">@d.artist</h5>
+                                    <p class="card-text">@d.name_record</p>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="row list-group-item">
+                                        <p class="card-text">Альбом:  @d.album</p>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <p class="card-text">Страна:  @d.country</p>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <p class="card-text">Лейбл: @d.label</p>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <p class="card-text">Год выпуска/год издания:  @d.year_of_issue <span>/</span> @d.year_of_public</p>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <p class="card-text">Тип: @d.type</p>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <p class="card-text">Состояние пластинки/конверта:  @d.plate_condition <span>/</span> @d.envelope_condition</p>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <p class="card-text">Размер диска:  @d.disk_size</p>
+                                    </li>
+                                </ul>
+                                <div class="card-body">
+                                 <a style="color: red" asp-controller="Delete" asp-action="Vinyl" asp-route-id="@d.id_record">Delete</a>
+                            </div>
+                            </div>
+                        </div>
+                        }
+                }
+                }
+    </div>
